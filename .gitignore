@@ -1,0 +1,25 @@
+# Node / React
+frontend/node_modules/
+frontend/dist/
+frontend/.env.local
+
+# Java / Maven
+backend/target/
+.mvn/
+*.class
+*.jar
+*.war
+
+# IDEs
+.idea/
+*.iml
+.vscode/
+.classpath
+.project
+.settings/
+
+# OS / Logs
+.DS_Store
+Thumbs.db
+*.log
+scratch/
