@@ -34,7 +34,8 @@ const Register = () => {
       setToast({ message: 'Registration successful! Welcome to LibFlow.', type: 'success' });
       setTimeout(() => navigate('/'), 800);
     } catch (err) {
-      setToast({ message: err.response?.data?.message || 'Registration failed. Check details.', type: 'error' });
+      const errorMessage = err.response?.data?.message || (typeof err.response?.data === 'string' ? err.response?.data : null) || err.message || 'Registration failed. Check details.';
+      setToast({ message: errorMessage, type: 'error' });
     } finally {
       setLoading(false);
     }

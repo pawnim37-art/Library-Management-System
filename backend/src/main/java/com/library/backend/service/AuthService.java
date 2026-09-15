@@ -45,7 +45,11 @@ public class AuthService {
 
     @Transactional
     public AuthResponse register(RegisterRequest request) {
-        if (userRepository.existsByEmail(request.getEmail())) {
+        if (request.getEmail() == null || request.getEmail().isBlank()) {
+            throw new IllegalArgumentException("Email is required");
+        }
+        String cleanEmail = request.getEmail().trim().toLowerCase();
+        if (userRepository.existsByEmail(cleanEmail)) {
             throw new IllegalArgumentException("Email is already registered!");
         }
 
@@ -56,8 +60,8 @@ public class AuthService {
                 roleStr = "ROLE_" + roleStr;
             }
             if (roleStr.equals("ROLE_ADMIN") || roleStr.equals("ROLE_LIBRARIAN")) {
-                // Secret key protection for elevated registration
-                if (!"LIBRARY_SECRET_2026".equals(request.getSecretKey())) {
+                String cleanSecret = request.getSecretKey() != null ? request.getSecretKey().trim() : "";
+                if (!"LIBRARY_SECRET_2026".equals(cleanSecret)) {
                     throw new IllegalArgumentException("Invalid secret key for elevated role registration!");
                 }
                 role = Role.valueOf(roleStr);
@@ -65,11 +69,11 @@ public class AuthService {
         }
 
         User user = User.builder()
-                .email(request.getEmail())
+                .email(cleanEmail)
                 .password(passwordEncoder.encode(request.getPassword()))
-                .fullName(request.getFullName())
-                .phone(request.getPhone())
-                .address(request.getAddress())
+                .fullName(request.getFullName() != null ? request.getFullName().trim() : "")
+                .phone(request.getPhone() != null ? request.getPhone().trim() : "")
+                .address(request.getAddress() != null ? request.getAddress().trim() : "")
                 .role(role)
                 .active(true)
                 .build();
@@ -88,11 +92,12 @@ public class AuthService {
     }
 
     public AuthResponse login(LoginRequest request) {
+        String cleanEmail = request.getEmail() != null ? request.getEmail().trim().toLowerCase() : "";
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
+                new UsernamePasswordAuthenticationToken(cleanEmail, request.getPassword())
         );
 
-        User user = userRepository.findByEmail(request.getEmail())
+        User user = userRepository.findByEmail(cleanEmail)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
         String token = jwtUtils.generateToken(user.getEmail(), user.getRole().name());
