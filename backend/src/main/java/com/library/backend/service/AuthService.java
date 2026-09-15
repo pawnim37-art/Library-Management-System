@@ -29,6 +29,20 @@ public class AuthService {
     private final JwtUtils jwtUtils;
     private final AuthenticationManager authenticationManager;
 
+    public AuthService(UserRepository userRepository,
+                       TransactionRepository transactionRepository,
+                       FineRepository fineRepository,
+                       PasswordEncoder passwordEncoder,
+                       JwtUtils jwtUtils,
+                       AuthenticationManager authenticationManager) {
+        this.userRepository = userRepository;
+        this.transactionRepository = transactionRepository;
+        this.fineRepository = fineRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtUtils = jwtUtils;
+        this.authenticationManager = authenticationManager;
+    }
+
     @Transactional
     public AuthResponse register(RegisterRequest request) {
         if (userRepository.existsByEmail(request.getEmail())) {

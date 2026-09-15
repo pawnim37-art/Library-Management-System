@@ -1,14 +1,14 @@
 package com.library.backend.service;
 
-import com.github.librepdf.openpdf.Document;
-import com.github.librepdf.openpdf.Font;
-import com.github.librepdf.openpdf.FontFactory;
-import com.github.librepdf.openpdf.PageSize;
-import com.github.librepdf.openpdf.Paragraph;
-import com.github.librepdf.openpdf.Phrase;
-import com.github.librepdf.openpdf.pdf.PdfPCell;
-import com.github.librepdf.openpdf.pdf.PdfPTable;
-import com.github.librepdf.openpdf.pdf.PdfWriter;
+import com.lowagie.text.Document;
+import com.lowagie.text.Font;
+import com.lowagie.text.FontFactory;
+import com.lowagie.text.PageSize;
+import com.lowagie.text.Paragraph;
+import com.lowagie.text.Phrase;
+import com.lowagie.text.pdf.PdfPCell;
+import com.lowagie.text.pdf.PdfPTable;
+import com.lowagie.text.pdf.PdfWriter;
 import com.library.backend.entity.Book;
 import com.library.backend.entity.Fine;
 import com.library.backend.entity.Transaction;
